@@ -2,3 +2,5 @@
 mysql-data/
 
 redis-data/
+
+*.csv
