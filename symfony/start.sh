@@ -1,3 +1,3 @@
-sleep 10
 composer install
-php bin/console server:run
+php bin/console migrate
+php bin/console server:run 0.0.0.0:8000

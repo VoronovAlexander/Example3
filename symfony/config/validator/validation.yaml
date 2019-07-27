@@ -1,0 +1,12 @@
+App\Entity\Post:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                min: 3
+                max: 255
+        content:
+            - NotBlank: ~
+            - Length:
+                min: 5
+                max: 5000

@@ -1,3 +1,28 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+   path: /
+   controller: App\Controller\PostController::index
+
+post_download:
+  path: /post/download
+  methods: GET
+  controller: App\Controller\PostController::download
+
+post_create:
+  path: /post/create
+  methods: GET
+  controller: App\Controller\PostController::create
+
+post_store:
+  path: /post/store
+  methods: POST
+  controller: App\Controller\PostController::store
+
+post_index:
+  path: /post
+  methods: GET
+  controller: App\Controller\PostController::index
+
+post_show:
+  path: /post/{id}
+  methods: GET
+  controller: App\Controller\PostController::show
