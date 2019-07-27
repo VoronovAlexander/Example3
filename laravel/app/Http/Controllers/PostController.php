@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Post;
 use App\Repositories\PostRepository;
 use Illuminate\Http\Request;
 
@@ -60,7 +59,7 @@ class PostController extends Controller
         ]);
 
         $data = $request->input();
-        
+
         $this->postRepository->store($data);
 
         return redirect(route('posts.index'));
@@ -74,7 +73,7 @@ class PostController extends Controller
      */
     public function show(int $id)
     {
-        
+
         $post = $this->postRepository
             ->getShow($id);
 
@@ -88,23 +87,8 @@ class PostController extends Controller
      */
     public function download()
     {
-        $path = public_path(uniqid() . ".csv");
-        $file = fopen($path, "w");
-
-        $title = sprintf("Название; Содержание\r\n");
-        $title = mb_convert_encoding($title, 'UTF-8');
-        fwrite($file, $title);
-
-        Post::orderByDesc('id')
-            ->chunk(100, function ($posts) use ($file) {
-                foreach ($posts as $post) {
-                    $row = sprintf("%s;%s\r\n", $post->name, $post->content);
-                    $row = mb_convert_encoding($row, 'UTF-8');
-                    fwrite($file, $row);
-                }
-            });
-
-        fclose($file);
+        $path = $this->postRepository
+            ->generateFile();
 
         return response()->download($path);
     }

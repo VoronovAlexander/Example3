@@ -19,7 +19,7 @@ class PostRepository extends BaseRepository
 
     /**
      * Получить пагинатор
-     * 
+     *
      * @param int $page
      * @param int $per_page
      * @return LengthAwarePaginator
@@ -39,7 +39,7 @@ class PostRepository extends BaseRepository
 
     /**
      * Создать новый пост
-     * 
+     *
      * @param array $data
      * @return Post
      */
@@ -52,7 +52,7 @@ class PostRepository extends BaseRepository
 
     /**
      * Получить для просмотра
-     * 
+     *
      * @param int $id
      * @return Post
      */
@@ -60,6 +60,35 @@ class PostRepository extends BaseRepository
     {
         $post = $this->getById($id);
         return $post;
+    }
+
+    /**
+     * Генерирование отчета
+     *
+     * @return string
+     */
+    public function generateFile(): string
+    {
+        $path = public_path(uniqid() . ".csv");
+        $file = fopen($path, "w");
+
+        $title = sprintf("Название; Содержание\r\n");
+        $title = mb_convert_encoding($title, 'UTF-8');
+        fwrite($file, $title);
+
+        $this->model
+            ->orderByDesc('id')
+            ->chunk(100, function ($posts) use ($file) {
+                foreach ($posts as $post) {
+                    $row = sprintf("%s;%s\r\n", $post->name, $post->content);
+                    $row = mb_convert_encoding($row, 'UTF-8');
+                    fwrite($file, $row);
+                }
+            });
+
+        fclose($file);
+
+        return $path;
     }
 
 }
