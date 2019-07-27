@@ -16,6 +16,20 @@
       ports: 
         - 8080:8080
 
+    symfony:
+      container_name: symfony
+      image: westside072/laravel-php-7.2:latest
+      restart: always
+      working_dir: /home/symfony
+      command: ./start.sh
+      volumes:
+        - ./symfony:/home/symfony
+      depends_on:
+        - mysqldb
+        - redisdb
+      ports: 
+        - 8000:8000
+
     queue:
       container_name: queue
       image: westside072/laravel-php-7.2:latest
